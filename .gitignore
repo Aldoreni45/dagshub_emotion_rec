@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pkl
+models/
+data/processed/
+data/features/
+mlruns/
