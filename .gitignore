@@ -5,3 +5,4 @@ models/
 data/processed/
 data/features/
 mlruns/
+.dvc/
