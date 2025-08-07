@@ -1,0 +1,46 @@
+stages:
+  process_data:
+    cmd: python src/data/make_dataset.py
+    deps:
+      - ravdess_features.csv
+    outs:
+      - data/processed/processed_features.csv:
+          persist: true
+    metrics:
+      - data/processed/metrics.json:
+          persist: true
+
+  build_features:
+    cmd: python src/features/build_features.py
+    deps:
+      - src/features/build_features.py
+      - data/processed/processed_features.csv
+    outs:
+      - data/features/features.csv:
+          persist: true
+    metrics:
+      - data/features/feature_metrics.json:
+          persist: true
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - src/models/model.py
+      - data/features/features.csv
+    outs:
+      - models/model.pkl:
+          persist: true
+    metrics:
+      - models/metrics.json:
+          persist: true
+
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+      - src/evaluate.py
+      - models/model.pkl
+      - data/features/features.csv
+    metrics:
+      - models/evaluation_metrics.json:
+          persist: true
